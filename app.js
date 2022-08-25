@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
-const express = require("express");
 require("dotenv").config();
+const express = require("express");
 
 const app = express();
 
@@ -19,13 +19,16 @@ const welcome = (req, res) => {
 app.get("/", welcome);
 
 app.post("/api/movies", movieHandlers.postMovie);
-app.post("/api/users",usersHandlers.postUsers)
-
 app.get("/api/movies", movieHandlers.getMovies);
 app.get("/api/movies/:id", movieHandlers.getMovieById);
+app.put("/api/movies/:id", movieHandlers.updateMovie);
 
+app.post("/api/users", usersHandlers.postUsers);
 app.get("/api/users", usersHandlers.getUsers);
 app.get("/api/users/:id", usersHandlers.getUsersById);
+app.put("/api/users/:id", usersHandlers.updateUsers);
+
+
 
 
 app.listen(port, (err) => {
