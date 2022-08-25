@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 const database = require("./database");
 
 const postUsers = (req, res) => {
@@ -64,10 +65,30 @@ const updateUsers = (req, res) => {
       res.status(500).send("Error updating users from database");
     });
 }
+const deleteUsers = (req, res) => {
+  const id = parseInt(req.params.id);
+
+  database
+    .query(
+      "delete from users where id = ?", [id]
+    )
+    .then((result) => {
+      if (result.affectedRows === 0) {
+        res.status(404).send("Not Found");
+      } else {
+        res.sendStatus(204);
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send("Error deleting users from database");
+    });
+};
 
 module.exports = {
   getUsers,
   getUsersById,
   postUsers,
   updateUsers,
+  deleteUsers,
 };
