@@ -18,8 +18,23 @@ const postUsers = (req, res) => {
 
 
 const getUsers = (req, res) => {
+  let sqlUsers = "select * from users";
+  const sqlValues = [];
+  if (req.query.language != null) {
+    sqlUsers += " where language =	?";
+    sqlValues.push(req.query.language)
+
+    if (req.query.city != null) {
+      sqlUsers += " and city = ?";
+      sqlValues.push(req.query.city);
+    }
+  } else if (req.query.max_language != null) {
+    sql += " where language = ?";
+    sqlValues.push(req.query.language);
+  }
+
   database
-    .query("select * from users")
+    .query(sqlUsers, sqlValues)
     .then(([users]) => {
       res.json(users);
     })
@@ -28,6 +43,7 @@ const getUsers = (req, res) => {
       res.status(500).send("Error retrieving data from database");
     });
 };
+
 
 const getUsersById = (req, res) => {
   const id = parseInt(req.params.id);
